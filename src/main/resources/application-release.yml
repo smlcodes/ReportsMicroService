@@ -1,0 +1,100 @@
+# ------------------
+# Profile: release
+# ------------------
+# Default properties:
+# - PostgresSQL database
+# - File logging
+# - EhCache
+# - Management services
+
+# Running Server properties
+server:
+  address: # bind address
+  port: 8001  # port must be unique for each deployed Module in the same environment
+  servlet:
+    context-path:/empty-microservice
+  error:
+    include-exception: false
+
+spring:
+  config:
+    location: "file:./config/" # Config file locations that replace the defaults.
+  mvc:
+    locale: en    
+    #log-resolved-exception: true
+  messages:
+    basename: "classpath:locale/messages"
+  datasource:
+    initialization-mode: always
+    schema: classpath:/schema.sql
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/db # replace db with db name. Add ?ssl=true to enable ssl
+    username: 
+    password:
+    hikari:
+        connection-timeout: 20000
+        maximum-pool-size: 10
+        minimum-idle: 2
+        idle-timeout: 300000
+        max-lifetime: 1200000
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL95Dialect
+    hibernate:
+      ddl-auto: update
+    properties:
+       hibernate:
+        default_schema: "empty-microservice_schema"
+        jdbc.lob.non_contextual_creation: true
+       org.hibernate:
+        naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+        envers:
+          audit_table_suffix: _audit
+          default_schema: "empty-microservice_audit_schema"
+          audit_strategy: org.hibernate.envers.strategy.ValidityAuditStrategy        
+        jdbc:
+          lob:
+            non_contextual_creation: true
+            show-sql: false
+          time_zone: UTC
+  cache:
+    jcache:
+      # Location of the ehcache configuration file. For instance, `classpath:ext/ehcache.xml` or `file:/path/ehcache.xml`.
+      config: classpath:ext/ehcache.xml    
+  mail:
+    host:
+    port: 0
+    username:
+    password:
+  quartz:
+    auto-startup: false
+  jmx:
+    enabled: false
+
+# Logging setup 
+logging:
+    # Location of the logging configuration file. For instance, `classpath:ext/logback-spring.xml` or `file:/path/logback.xml`.
+    config: "classpath:ext/logback-spring.xml"
+
+# Management & Monitoring
+management:
+  metrics:
+    export:
+      jmx:
+        enabled: false
+  endpoints:
+    web:
+      cors:
+        allowed-origins:
+        allowed-methods:
+        allowed-headers:
+        exposed-headers:
+      exposure:
+        include: info, health, metrics, heapdump, httptrace, loggers, threaddump, sessions
+
+# Error handling
+errors:
+  expose-arguments: ALWAYS
+  add-fingerprint: true
+
+# Application specific properties
+app:

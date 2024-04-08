@@ -1,0 +1,98 @@
+# ------------------
+# Profile: local
+# ------------------
+# Default properties:
+# - H2 embedded database
+# - Console logging
+# - Simple Caching (In-Memory)
+# - No management services
+
+# Running Server properties
+server:
+  address: 127.0.0.1
+  port: 8001
+  servlet:
+    context-path: /empty-microservice
+  error:
+    include-exception: true
+spring:
+  mvc:
+    locale: en
+    #log-resolved-exception: false
+    #throw-exception-if-no-handler-found: true
+  #resources:
+  #  add-mappings: false
+  messages:
+    basename: classpath:locale/messages
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+    hikari:
+        connection-timeout: 20000
+        maximum-pool-size: 10
+        minimum-idle: 2
+        idle-timeout: 300000
+        max-lifetime: 1200000
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      org.hibernate:
+        naming-strategy: #org.hibernate.cfg.ImprovedNamingStrategy
+        envers:
+          audit_table_suffix: _audit
+          default_schema:
+          audit_strategy: org.hibernate.envers.strategy.ValidityAuditStrategy
+        jdbc:
+          lob:
+            non_contextual_creation: true
+            show-sql: false
+          time_zone: UTC
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  cache:
+    type: simple    
+    cache-names: PreAuthUsers # Specify cache names (comma seperated)
+  mail:
+    host:
+    port: 0
+    username:
+    password:
+  quartz:
+    auto-startup: false
+  jmx:
+    enabled: false
+
+# Logging setup 
+logging:
+    pattern:
+      console: "%d{ISO8601} [%highlight(%-5level)] [%-10.10t] %yellow(%-40.40logger{39}): %msg%n%throwable"
+    level:
+      com.dutech: TRACE
+
+# Management & Monitoring
+management:
+  metrics:
+    export:
+      jmx:
+        enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: info, health, metrics, heapdump, httptrace, loggers, threaddump, sessions
+
+# Error handling
+errors:
+  expose-arguments: ALWAYS
+  add-fingerprint: true
+  
+# Application specific properties
+app:
+
+
+  

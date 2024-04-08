@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jsr107="http://www.ehcache.org/v3/jsr107" 
+	xmlns="http://www.ehcache.org/v3"
+	xsi:schemaLocation="
+		http://www.ehcache.org/v3 http://www.ehcache.org/schema/ehcache-core-3.6.xsd
+		http://www.ehcache.org/v3/jsr107 http://www.ehcache.org/schema/ehcache-107-ext-3.6.xsd">
+	
+    <service>
+        <jsr107:defaults enable-management="true" enable-statistics="true"/>
+    </service>
+    
+    <persistence directory="./cache"/>
+    
+    <cache alias="GenericCache" uses-template="generic-cache"></cache>
+	<cache alias="PreAuthUsers" uses-template="preauthusers-cache"></cache>
+	<cache alias="employees" uses-template="employees-cache"></cache>
+    
+    <!-- Cache Templates-->
+    <cache-template name="generic-cache">
+ 	   <expiry>
+    	    <tti unit="seconds">300</tti>
+    	</expiry>
+    	<heap unit="entries">2000</heap>
+    </cache-template>
+
+    <cache-template name="preauthusers-cache">
+ 	   <expiry>
+    	    <tti unit="seconds">300</tti>
+    	</expiry>
+    	<heap unit="entries">2000</heap>
+    </cache-template>
+
+
+	<cache-template name="employees-cache">
+		<expiry>
+			<tti unit="seconds">300</tti>
+		</expiry>
+		<heap unit="entries">2000</heap>
+	</cache-template>
+</config>

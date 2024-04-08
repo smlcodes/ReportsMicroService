@@ -1,0 +1,156 @@
+# ------------------
+# Profile: dev
+# ------------------
+# Default properties:
+# - PostgresSQL database
+# - Console and File logging
+# - EhCache
+# - Management services
+
+# Running Server properties
+server:
+  address: # bind address
+  port: 8002  # port must be unique for each deployed Module in the same environment
+  servlet:
+    context-path: /declaration-x
+  error:
+    include-exception: true
+
+spring:
+  config:
+    location: "file:./config/" # Config file locations that replace the defaults.
+  servlet:
+    multipart:
+      max-file-size: 1MB
+      max-request-size: 1MB
+  mvc:
+    pathmatch:
+      matching-strategy: ant-path-matcher
+  web:
+    locale: en
+    #log-resolved-exception: true
+  messages:
+    basename: classpath:locale/messages
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/imperial
+    username: postgres
+    password: postgres
+    hikari:
+      connection-timeout: 20000
+      maximum-pool-size: 10
+      minimum-idle: 2
+      idle-timeout: 300000
+      max-lifetime: 1200000
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:/schema.sql
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL95Dialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        default_schema: "declaration_x"
+        jdbc.lob.non_contextual_creation: true
+        integration.envers.enabled: false #TODO should be true
+      org.hibernate:
+        naming-strategy: org.springframework.boot.orm.jpa.hibernate.SpringNamingStrategy
+        envers:
+          default_schema: "declaration_th_audit"
+          audit_strategy: org.hibernate.envers.strategy.DefaultAuditStrategy
+        jdbc:
+          lob:
+            non_contextual_creation: true
+            show-sql: false
+          time_zone: UTC
+  cache:
+    jcache:
+      # Location of the ehcache configuration file. For instance, `classpath:ext/ehcache.xml` or `file:/path/ehcache.xml`.
+      config: classpath:ext/ehcache.xml
+  mail:
+    host:
+    port: 0
+    username:
+    password:
+  quartz:
+    auto-startup: false
+  jmx:
+    enabled: false
+  data:
+    web:
+      pageable:
+        max-page-size: 100
+
+# Logging setup
+logging:
+  pattern:
+    console: "%d{ISO8601} [%highlight(%-5level)] [%-10.10t] %yellow(%-40.40logger{39}): %msg%n%throwable"
+  level:
+    com.dutech: TRACE
+
+# Management & Monitoring
+management:
+  metrics:
+    export:
+      jmx:
+        enabled: false
+  endpoints:
+    web:
+      cors:
+        allowed-origins:
+        allowed-methods:
+        allowed-headers:
+        exposed-headers:
+      exposure:
+        include: info, health, metrics, heapdump, httptrace, loggers, threaddump, sessions
+
+# Error handling
+errors:
+  expose-arguments: ALWAYS
+  add-fingerprint: true
+
+redis:
+  password:
+  sentinal:
+    port: 26379
+    nodes: localhost
+    master: redis-sentinel
+    expiryTTL: 300000
+
+# Application specific properties
+app:
+  maxSequence: 99
+  resource:
+    file:
+      path: /home
+    urls:
+      - name: integration
+        end-point: http://localhost:8607/integration-sa
+        username: root
+      - name: des
+        #for local -> https://customsdev.cargoes.com/des
+        end-point: https://customsdev.cargoes.com/des-sa
+        username: root
+
+feign:
+  client:
+    config:
+      default:
+        loggerLevel: basic
+    url:
+      rdm: https://customsdev.cargoes.com/rdm-sa
+      nsm: https://customsdev.cargoes.com/nsm
+      tariff: https://customsdev.cargoes.com/tariff-sa
+      aum: https://customsdev.cargoes.com/aum-sa
+      reports: https://customsdev.cargoes.com/reports-sa
+      unifiedsource: https://customsdev.cargoes.com/unifiedsource
+      dms: https://customsdev.cargoes.com/dms
+      des: https://customsdev.cargoes.com/des
+eureka:
+  client:
+    enabled: false
+declarationEndpoint: http://cargoes-app-declaration-th:8321
+uiPath: https://customsdev.cargoes.com/cargoes-declaration-ui-th/#/export-decl/view/
+ediReleaseCodes: 1,8,40
