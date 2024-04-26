@@ -10,9 +10,9 @@
 # Running Server properties
 server:
   address: # bind address
-  port: 8993  # port must be unique for each deployed Module in the same environment
+  port: 8992  # port must be unique for each deployed Module in the same environment
   servlet:
-    context-path: /reports-service
+    context-path: /email-service
   error:
     include-exception: true
 
@@ -81,10 +81,16 @@ spring:
     redis:
       time-to-live: 60000
   mail:
-    host:
-    port: 0
-    username:
-    password:
+    host: smtp.gmail.com
+    port: 587
+    username: smlcodes@gmail.com
+    password: atem skwl cdjb huwx
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   quartz:
     auto-startup: false
   jmx:
@@ -166,7 +172,7 @@ feign:
       nsm: https://customsdev.cargoes.com/nsm
       tariff: https://customsdev.cargoes.com/tariff-sa
       aum: https://customsdev.cargoes.com/aum-sa
-      reports: https://customsdev.cargoes.com/reports-sa
+      reports: https://customsdev.cargoes.com/email-sa
       unifiedsource: https://customsdev.cargoes.com/unifiedsource
       dms: https://customsdev.cargoes.com/dms
       des: https://customsdev.cargoes.com/des

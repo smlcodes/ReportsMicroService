@@ -144,7 +144,7 @@ feign:
       nsm: https://customsdev.cargoes.com/nsm
       tariff: https://customsdev.cargoes.com/tariff-sa
       aum: https://customsdev.cargoes.com/aum-sa
-      reports: https://customsdev.cargoes.com/reports-sa
+      reports: https://customsdev.cargoes.com/email-sa
       unifiedsource: https://customsdev.cargoes.com/unifiedsource
       dms: https://customsdev.cargoes.com/dms
       des: https://customsdev.cargoes.com/des
