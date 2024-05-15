@@ -51,6 +51,7 @@ public class EmailServiceImpl implements EmailService {
      */
     public void sendSimpleMail(EmailRequestDto dto) {
         try {
+            dto = getEmailDto();
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom("email-service@gmail.com");
             message.setTo(dto.getTo());
@@ -58,7 +59,8 @@ public class EmailServiceImpl implements EmailService {
             message.setSentDate(new Date());
             message.setSubject(dto.getSubject());
             message.setText(dto.getBody());
-            javaMailSender.send(message);
+            javaMailSender.send(message);  
+            //If you get NULL POINTER here , check CC, Subject, Body Values not null.
             log.info("SimpleMail Sent. Please Check "+dto.getTo()+" INBOX");
         } catch (Exception e) {
             e.printStackTrace();
@@ -110,9 +112,12 @@ public class EmailServiceImpl implements EmailService {
         emailRequestDto.setTo("smlcodes@gmail.com");
         emailRequestDto.setCc("smlcodes@gmail.com");
         emailRequestDto.setSubject("Email Services Email Test");
-        emailRequestDto.setBody("Noraml Text. <h1> HTML Header Text </h1>");
-        emailRequestDto.setAttachment("resources/files/email.pdf");
-        emailRequestDto.setFileName("Attachement.pdf");
+        emailRequestDto.setBody("Normal Text");
+
+
+        //emailRequestDto.setBody("Noraml Text. <h1> HTML Header Text </h1>");
+        //emailRequestDto.setAttachment("resources/files/email.pdf");
+        //emailRequestDto.setFileName("Attachement.pdf");
         return emailRequestDto;
     }
 
